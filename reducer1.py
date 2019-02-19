@@ -13,7 +13,7 @@ for line in sys.stdin:
     # remove leading and trailing whitespace
     line = line.strip()
 
-    # parse the input we got from mapper.py
+    # parse the input we got from mapper1.py
     word, count = line.split('\t', 1)
 
     # convert count (currently a string) to int
@@ -29,7 +29,7 @@ for line in sys.stdin:
     if current_word == word:
         current_count += count
     else:
-        if current_word:
+        if current_word: #if it is not none
             # write result to STDOUT
             print '%s\t%s' % (current_word, current_count)
         current_count = count
@@ -40,5 +40,5 @@ if current_word == word:
     print '%s\t%s' % (current_word, current_count)
 
 
-    #output word#filename  count
-    #count is how many times the word appeared in the doc
+    #output: <word#filename,  count>
+    #count is how many times the word appeared in its file

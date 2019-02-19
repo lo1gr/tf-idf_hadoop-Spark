@@ -11,8 +11,9 @@ for line in sys.stdin:
     # split the line into words
     wordfilename,count=line.split('\t',1)
     word,filename=wordfilename.split(' ',1)
-    z=word+' '+count;
-    print '%s\t%s' % (filename, z)
+    out=word+' '+count;
+    print '%s\t%s' % (filename, out)
+    #output: <filename, word#count>
         # write the results to STDOUT (standard output);
         # what we output here will be the input for the
         # Reduce step, i.e. the input for reducer.py

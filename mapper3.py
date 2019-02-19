@@ -9,7 +9,9 @@ for line in sys.stdin:
     # remove leading and trailing whitespace
     line = line.strip()
     # split the line into words
-    wf,nN=line.split('\t',1)
-    w,f=wf.split(' ',1)
-    z=f+' '+nN+' '+str(1)
-    print '%s\t%s' % (w,z)
+    wordfilename,nN=line.split('\t',1)
+    word,filename=wordfilename.split(' ',1)
+    out=filename+' '+nN+' '+str(1)
+    print '%s\t%s' % (word,out)
+
+    #output: <word,filename#nN#1>
