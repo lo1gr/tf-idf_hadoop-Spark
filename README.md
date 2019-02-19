@@ -15,4 +15,4 @@ to run the file called
 easy_run.sh:   dothe following in the terminal:
 time easy_run.sh
 
-This will output 3 times that we weill use for the experimental analysis.
+This will output 3 times that we we will use for the experimental analysis.
