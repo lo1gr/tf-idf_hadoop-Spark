@@ -1,3 +1,7 @@
+for i in {0..9}; do
+       hdfs dfs -put text_$i.txt /user/hadoop/wc/input
+done
+
 hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
 -input /user/hadoop/wc/input/*.txt \
 -output /user/hadoop/wc/output1 \

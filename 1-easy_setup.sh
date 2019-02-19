@@ -13,7 +13,3 @@ wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/stopword
 chmod +x *.py
 hdfs dfs -mkdir /user/hadoop/wc
 hdfs dfs -mkdir /user/hadoop/wc/input
-
-for i in {0..9}; do
-       hdfs dfs -put text_$i.txt /user/hadoop/wc/input
-done
