@@ -6,10 +6,7 @@ import os
 
 
 
-# filtering stop words
-stopwords=[]
-for line in open('stopwords_en.txt'):
-    stopwords.append(line.strip())
+
 
 # input comes from STDIN (standard input)
 for line in sys.stdin:
@@ -22,6 +19,12 @@ for line in sys.stdin:
     line = line.strip()
     # split the line into words
     words = line.split()
+
+    # populate the stopwords
+    stopwords=[]
+    for line in open('stopwords_en.txt'):
+        stopwords.append(line.strip())
+
     # increase counters
     for word in words:
         word=word.lower();
