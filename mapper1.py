@@ -5,7 +5,7 @@ import re
 import os
 from nltk.corpus import stopwords
 
-stopwords = set(stopwords.words('english')) 
+stop_words = set(stopwords.words('english'))
 
 # input comes from STDIN (standard input)
 for line in sys.stdin:
@@ -24,7 +24,7 @@ for line in sys.stdin:
         word=word.lower();
         #remove everything that isn't a character or number
         word=re.sub(r'[\W_]+', '', word)
-        if word not in stopwords:
+        if word not in stop_words:
             out=word+' '+input_file;
             print '%s\t%s' % (out, 1)
         # write the results to STDOUT (standard output);
