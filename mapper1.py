@@ -4,6 +4,11 @@ import sys
 import re
 import os
 
+# populate the stopwords
+stopwords=[]
+for row in open('stopwords_en.txt','r'):
+    stopwords.append(row.strip())
+
 # input comes from STDIN (standard input)
 for line in sys.stdin:
     try:
@@ -15,11 +20,6 @@ for line in sys.stdin:
     line = line.strip()
     # split the line into words
     words = line.split()
-
-    # populate the stopwords
-    stopwords=[]
-    for row in open('stopwords_en.txt','r'):
-        stopwords.append(row.strip())
 
     # increase counters
     for word in words:
