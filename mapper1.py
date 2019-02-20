@@ -3,11 +3,9 @@
 import sys
 import re
 import os
+from nltk.corpus import stopwords
 
-# populate the stopwords
-stopwords=[]
-for row in open('stopwords_en.txt','r'):
-    stopwords.append(row.strip())
+stopwords = set(stopwords.words('english')) 
 
 # input comes from STDIN (standard input)
 for line in sys.stdin:
