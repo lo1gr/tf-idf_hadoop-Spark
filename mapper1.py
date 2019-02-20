@@ -18,7 +18,7 @@ for line in sys.stdin:
 
     # populate the stopwords
     stopwords=[]
-    for row in open('stopwords_en.txt'):
+    for row in open('stopwords_en.txt','r'):
         stopwords.append(row.strip())
 
     # increase counters
