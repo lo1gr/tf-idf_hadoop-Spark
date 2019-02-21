@@ -11,7 +11,7 @@ done
 
 
 
-to run the file called 
+to run the file called
 easy_run.sh:   dothe following in the terminal:
 time easy_run.sh
 
