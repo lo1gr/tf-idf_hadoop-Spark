@@ -16,3 +16,19 @@ easy_run.sh:   dothe following in the terminal:
 time easy_run.sh
 
 This will output 3 times that we we will use for the experimental analysis.
+
+
+wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/documents/0/text_0.txt
+wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/documents/0/text_1.txt
+wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/documents/0/text_2.txt
+wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/documents/0/text_3.txt
+wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/documents/0/text_4.txt
+
+hdfs dfs -mkdir /user/hadoop/tfidf
+hdfs dfs -mkdir /user/hadoop/tfidf/input
+
+hdfs dfs -put text_0.txt /user/hadoop/tfidf/input
+hdfs dfs -put text_1.txt /user/hadoop/tfidf/input
+hdfs dfs -put text_2.txt /user/hadoop/tfidf/input
+hdfs dfs -put text_3.txt /user/hadoop/tfidf/input
+hdfs dfs -put text_4.txt /user/hadoop/tfidf/input
