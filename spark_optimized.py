@@ -52,22 +52,26 @@ def tokenize(s):
 #We Tokenize the text
 tokenized_text = texts.map(lambda (title,text): (title, tokenize(text)))
 
-#Count Words in each document
-term_frequency = tokenized_text.flatMapValues(lambda x: x).countByValue()
+#Count Word Frequency in each document
+term_frequency = tokenized_text.flatMapValues(lambda x: x).countByValue()\
+                    .map(lambda x: x[1]=x[1]/)
+#delete by number of words in document
 
-#how many times the words occur in the documen
+#how many times the words occur in ALL the documen
 document_frequency = tokenized_text.flatMapValues(lambda x: x).distinct()\
                         .map(lambda (title,word): (word,title)).countByKey()
-
+#
 
 document_frequency.items()[:10]
 
 import numpy as np
 
 #compute tf_idf
+# term_frequency: ((text0,text1..., word), count)
+#doc freq: <word,count>
 def tf_idf(number_of_docs, term_frequency, document_frequency):
     result = []
-    for key, value in tf.items():
+    for key, value in term_frequency.items():
         doc = key[0]
         term = key[1]
         df = document_frequency[term]
