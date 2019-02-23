@@ -1,7 +1,14 @@
  # sc.textFile(“/path/to/dir”), where it returns an rdd of string or
  # use sc.wholeTextFiles(“/path/to/dir”) to get an RDD of (key,value) pairs
  # where key is the path and value is the content from each file.
-texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
+
+
+def removePunctuation(text):
+    text=text.lower().strip()
+    text=re.sub(“[^0-9a-zA-Z ]”, ”, text)
+    return text
+
+texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input").map(removePunctuation)
 docs = texts.toDF()
 docs = docs.toDF('label', 'sentence')
 docs.show(2)
@@ -14,6 +21,21 @@ docs.show(2)
 
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer, StopWordsRemover
 from pyspark.ml import Pipeline
+
+# remove the punc:
+# def lower_clean_str(x):
+#   punc='!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+#   lowercased_str = x.lower()
+#   for ch in punc:
+#     lowercased_str = lowercased_str.replace(ch, '')
+#   return lowercased_str
+#
+# l=sc.parallelize(["How are you","Hello\ then% you","I think he's fine+ COMING"])
+# one_RDD = l.map(lower_clean_str)
+# one_RDD.collect()
+#
+
+
 
 tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
 remover = StopWordsRemover(inputCol="words",
@@ -55,7 +77,8 @@ tokenized_text = texts.map(lambda (title,text): (title, tokenize(text)))
 #Count Word Frequency in each document
 term_frequency = tokenized_text.flatMapValues(lambda x: x).countByValue()\
                     .map(lambda x: x[1]=x[1]/)
-#delete by number of words in document
+#NEED TO DIVIDE BY TOTAL NUMBER OF WORDS PER DOC!
+
 
 #how many times the words occur in ALL the documen
 document_frequency = tokenized_text.flatMapValues(lambda x: x).distinct()\
