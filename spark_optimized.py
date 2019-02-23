@@ -22,18 +22,27 @@ docs.show(2)
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer, StopWordsRemover
 from pyspark.ml import Pipeline
 
-# remove the punc:
-# def lower_clean_str(x):
-#   punc='!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-#   lowercased_str = x.lower()
-#   for ch in punc:
-#     lowercased_str = lowercased_str.replace(ch, '')
-#   return lowercased_str
+# Comprendre:
+# from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 #
-# l=sc.parallelize(["How are you","Hello\ then% you","I think he's fine+ COMING"])
-# one_RDD = l.map(lower_clean_str)
-# one_RDD.collect()
+# sentenceData = spark.createDataFrame([
+#     (0.0, "Hi I heard about Spark"),
+#     (0.0, "I wish Java could use case classes"),
+#     (1.0, "Logistic regression models are neat")
+# ], ["label", "sentence"])
 #
+# tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+# wordsData = tokenizer.transform(sentenceData)
+#
+# hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
+# featurizedData = hashingTF.transform(wordsData)
+# # alternatively, CountVectorizer can also be used to get term frequency vectors
+#
+# idf = IDF(inputCol="rawFeatures", outputCol="features")
+# idfModel = idf.fit(featurizedData)
+# rescaledData = idfModel.transform(featurizedData)
+#
+# rescaledData.select("label", "features").show()
 
 
 
