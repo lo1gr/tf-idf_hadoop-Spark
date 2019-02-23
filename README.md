@@ -36,3 +36,7 @@ de le run pas ligne a ligne mais juste en faisant run un doc .py?
 instances, nombre d instances, taille de corpus, les 2 mapreduce et les 2 pySpark
 6- Tout documenter sur le doc word au fur et a mesure
 7- Le passer en Latex
+8- pour faire des modifs au github, telechargez "github desktop", clonez le repo en local
+et ensuite faites les modif comme ca en changeant les doc localemnt, commit puis push
+(tout est montre sur l'application) - faire attention a bien le faire sur une branche
+(ooption dans l'app), et la merge avec la branche principale si vous etes 100% surs. Sinon juste assurez vous de pousser vos commits assez souvent et s'assurer de pas se marcher sur les pieds car si on modifie en mm temps sur la branche principale ca bug.
