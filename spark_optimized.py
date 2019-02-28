@@ -22,27 +22,62 @@ docs.show(2)
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer, StopWordsRemover
 from pyspark.ml import Pipeline
 
-# Comprendre:
-# from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-#
-# sentenceData = spark.createDataFrame([
-#     (0.0, "Hi I heard about Spark"),
-#     (0.0, "I wish Java could use case classes"),
-#     (1.0, "Logistic regression models are neat")
-# ], ["label", "sentence"])
-#
-# tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
-# wordsData = tokenizer.transform(sentenceData)
-#
-# hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
-# featurizedData = hashingTF.transform(wordsData)
-# # alternatively, CountVectorizer can also be used to get term frequency vectors
-#
-# idf = IDF(inputCol="rawFeatures", outputCol="features")
-# idfModel = idf.fit(featurizedData)
-# rescaledData = idfModel.transform(featurizedData)
-#
-# rescaledData.select("label", "features").show()
+#2:
+from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer
+
+sentenceData = spark.createDataFrame([
+    (0.0, "Hi I heard about Spark"),
+    (0.0, "I wish Java could use case classes"),
+    (1.0, "Logistic regression models are neat")
+], ["label", "sentence"])
+
+tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+wordsData = tokenizer.transform(sentenceData)
+
+
+cv = CountVectorizer(inputCol="words", outputCol="rawFeatures")
+model = cv.fit(wordsData)
+featurizedData = model.transform(wordsData)
+
+idf = IDF(inputCol="rawFeatures", outputCol="features")
+idfModel = idf.fit(featurizedData)
+rescaledData = idfModel.transform(featurizedData)
+
+rescaledData.select("label", "features").show()
+
+
+
+
+
+from pyspark.ml.linalg import Vectors, VectorUDT
+>>> test = udf(lambda vs: Vectors.dense(vs), VectorUDT())
+
+
+#try TF
+from pyspark.sql.functions import size
+>>> featurizedData.filter(size('words')>5).show()
+
+featurizedData = featurizedData.withColumn("size",size('words'))
+
+
+
+
+
+# dont work:
+# rescaledData.withColumn("test", rescaledData["features"].getItem(2))
+# rescaledData.selectExpr("features[2]").show()
+#from pyspark.sql.functions import lit, udf
+#rescaledData.select("features", lit(2)).show()
+
+
+
+
+
+
+
+rescaledData.schema["features"].dataType
+
+rescaledData.withColumn('tf', rescaledData['features'] / rescaledData['size'])
 
 
 
@@ -64,57 +99,24 @@ model = pipeline.fit(docs)
 results = model.transform(docs)
 #results2 = model2.transform(docs)
 
+#From website: example of TFIDF
 
-
-# cv = CountVectorizer(inputCol="filtered", outputCol="rawFeatures")
-# pipeline2 = Pipeline(stages=[tokenizer, remover, cv, idf])
-# model2 = pipeline2.fit(docs)
-#results = model.transform(docs)
-#results2 = model2.transform(docs)
-
-
-number_of_docs = texts.count()
-
-#split words
-import re
-def tokenize(s):
-  return re.split("\\W+", s.lower())
-
-#We Tokenize the text
-tokenized_text = texts.map(lambda (title,text): (title, tokenize(text)))
-
-#Count Word Frequency in each document
-term_frequency = tokenized_text.flatMapValues(lambda x: x).countByValue()\
-                    .map(lambda x: x[1]=x[1]/)
-#NEED TO DIVIDE BY TOTAL NUMBER OF WORDS PER DOC!
-
-
-#how many times the words occur in ALL the documen
-document_frequency = tokenized_text.flatMapValues(lambda x: x).distinct()\
-                        .map(lambda (title,word): (word,title)).countByKey()
+# from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 #
-
-document_frequency.items()[:10]
-
-import numpy as np
-
-#compute tf_idf
-# term_frequency: ((text0,text1..., word), count)
-#doc freq: <word,count>
-def tf_idf(number_of_docs, term_frequency, document_frequency):
-    result = []
-    for key, value in term_frequency.items():
-        doc = key[0]
-        term = key[1]
-        df = document_frequency[term]
-        if (df>0):
-          tf_idf = float(value)*np.log(number_of_docs/df)
-
-        result.append({"doc":doc, "score":tf_idf, "term":term})
-    return result
-
-
-
-tf_idf_output = tf_idf(number_of_docs, term_frequency, document_frequency)
-
-tf_idf_output[:10]
+# sentenceData = spark.createDataFrame([
+#     (0.0, "Hi I heard about Spark"),
+#     (0.0, "I wish Java could use case classes"),
+#     (1.0, "Logistic regression models are neat")
+# ], ["label", "sentence"])
+#
+# tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+# wordsData = tokenizer.transform(sentenceData)
+#
+# hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
+# featurizedData2 = hashingTF.transform(wordsData)
+#
+# idf2 = IDF(inputCol="rawFeatures", outputCol="features")
+# idfModel2 = idf2.fit(featurizedData2)
+# rescaledData2 = idfModel2.transform(featurizedData2)
+#
+# rescaledData2.select("label", "features").show()

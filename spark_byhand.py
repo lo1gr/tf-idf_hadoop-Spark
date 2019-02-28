@@ -1,56 +1,40 @@
-from operator import add
-import math
 
-#number docs
-D = 10
+number_of_docs = texts.count()
 
-#wordcount in doc:
-counts0 = text0.flatMap(lambda x: x.split(' ')) \
-		.map(lambda x: (x, 1)) \
-		.reduceByKey(add)
+#split words
+import re
+def tokenize(s):
+  return re.split("\\W+", s.lower())
 
-#total number words in document:
-N0 = text0.flatMap(lambda x: x.split(' ')) \
-		.count()
+#We Tokenize the text
+tokenized_text = texts.map(lambda (title,text): (title, tokenize(text)))
 
-tf0 = counts0.map(lambda x: x/N0)
+#Count Word Frequency in each document
+term_frequency = tokenized_text.flatMapValues(lambda x: x).countByValue())
+#NEED TO DIVIDE BY TOTAL NUMBER OF WORDS PER DOC!
 
-#number of documents with term t in it   term t0, t1...  #docs is Value
-#want output:
-# <t0,NumDocs>
-# <t1,NumDocs>
-# <t2,NumDocs>
-#if doc
-counts0
 
-idf0 = log(D/)
+#how many times the words occur in ALL the documen
+document_frequency = tokenized_text.flatMapValues(lambda x: x).distinct()\
+                        .map(lambda (title,word): (word,title)).countByKey()
 
-TF(t) = (Number of times term t appears in a document) / (Total number of terms in the document)
-IDF(t) = log_e(Total number of documents / Number of documents with term t in it).
+import numpy as np
 
-tfidf= TF*IDF
+#compute tf_idf
+# term_frequency: ((text0,text1..., word), count)
+#doc freq: <word,count>
+def tf_idf(number_of_docs, term_frequency, document_frequency):
+    result = []
+    for key, value in term_frequency.items():
+        doc = key[0]
+        term = key[1]
+        df = document_frequency[term]
+        if (df>0):
+          tf_idf = float(value)*np.log(number_of_docs/df)
 
-#goes over ALL LINES looking for 1 WORD
-#need to go over ALL DOCS looking for ALL WORDS appearing
-input.filter(lambda line : "error" in line).count()
-
-#1- get all existing keys in all the docs
-#filter acoording to those keys to find if doc contains.
+        result.append({"doc":doc, "score":tf_idf, "term":term})
+    return result
 
 
 
-
-# from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-# from pyspark.ml.feature import StringIndexer
-# from pyspark.ml import Pipeline
-#
-# tokenizer = Tokenizer(inputCol="text", outputCol="words")
-# hashtf = HashingTF(numFeatures=2**16, inputCol="words", outputCol='tf')
-# idf = IDF(inputCol='tf', outputCol="features", minDocFreq=5) #minDocFreq: remove sparse terms
-# label_stringIdx = StringIndexer(inputCol = "target", outputCol = "label")
-# pipeline = Pipeline(stages=[tokenizer, hashtf, idf, label_stringIdx])
-#
-# pipelineFit = pipeline.fit(train_set)
-# train_df = pipelineFit.transform(train_set)
-# val_df = pipelineFit.transform(val_set)
-# train_df.show(5)
+tf_idf_output = tf_idf(number_of_docs, term_frequency, document_frequency)
