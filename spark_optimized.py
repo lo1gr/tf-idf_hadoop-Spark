@@ -22,6 +22,24 @@ docs.show(2)
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer, StopWordsRemover
 from pyspark.ml import Pipeline
 
+tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+remover = StopWordsRemover(inputCol="words",
+outputCol="filtered")
+
+cv = CountVectorizer(inputCol="words", outputCol="rawFeatures")
+
+idf = IDF(inputCol="rawFeatures", outputCol="features")
+
+pipeline = Pipeline(stages=[tokenizer, remover, cv, idf])
+
+model = pipeline.fit(docs)
+
+results = model.transform(docs)
+
+#END
+
+
+
 #2:
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer
 
@@ -46,7 +64,11 @@ rescaledData = idfModel.transform(featurizedData)
 rescaledData.select("label", "features").show()
 
 
-
+from pyspark.sql.functions import split
+split_col = split(rescaledData['features'], ',')
+df = rescaledData.withColumn('NAME1', split_col.getItem(0))
+df = df.withColumn('NAME2', split_col.getItem(1))
+df.show()
 
 
 from pyspark.ml.linalg import Vectors, VectorUDT

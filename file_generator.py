@@ -4,7 +4,7 @@ import random
 word_list = random.sample(list(map(lambda x: x.strip(), open('words.txt', 'r'))), k=700) #700 words that we are going to
 #sample from
 
-n_words = 10000
+n_words = 100000
 
 if not os.path.exists('documents'):
     os.mkdir('documents')
