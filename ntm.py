@@ -5,8 +5,7 @@ sc = SparkContext("local", "first app")
 
 
 texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
-docs = texts.toDF()
-docs = docs.toDF('label', 'sentence')
+docs = texts.toDF('label', 'sentence')
 docs.show(2)
 
 # In the following code segment, we start with a set of sentences. We split each
