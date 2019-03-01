@@ -1,7 +1,8 @@
  # sc.textFile(“/path/to/dir”), where it returns an rdd of string or
  # use sc.wholeTextFiles(“/path/to/dir”) to get an RDD of (key,value) pairs
  # where key is the path and value is the content from each file.
-
+from pyspark import SparkContext
+sc = SparkContext("local", "first app")
 
 def removePunctuation(text):
     text=text.lower().strip()
@@ -41,46 +42,46 @@ results = model.transform(docs)
 
 
 #2:
-from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer
-
-sentenceData = spark.createDataFrame([
-    (0.0, "Hi I heard about Spark"),
-    (0.0, "I wish Java could use case classes"),
-    (1.0, "Logistic regression models are neat")
-], ["label", "sentence"])
-
-tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
-wordsData = tokenizer.transform(sentenceData)
-
-
-cv = CountVectorizer(inputCol="words", outputCol="rawFeatures")
-model = cv.fit(wordsData)
-featurizedData = model.transform(wordsData)
-
-idf = IDF(inputCol="rawFeatures", outputCol="features")
-idfModel = idf.fit(featurizedData)
-rescaledData = idfModel.transform(featurizedData)
-
-rescaledData.select("label", "features").show()
-
-
-from pyspark.sql.functions import split
-split_col = split(rescaledData['features'], ',')
-df = rescaledData.withColumn('NAME1', split_col.getItem(0))
-df = df.withColumn('NAME2', split_col.getItem(1))
-df.show()
-
-
-from pyspark.ml.linalg import Vectors, VectorUDT
->>> test = udf(lambda vs: Vectors.dense(vs), VectorUDT())
-
-
-#try TF
-from pyspark.sql.functions import size
->>> featurizedData.filter(size('words')>5).show()
-
-featurizedData = featurizedData.withColumn("size",size('words'))
-
+# from pyspark.ml.feature import HashingTF, IDF, Tokenizer, CountVectorizer
+#
+# sentenceData = spark.createDataFrame([
+#     (0.0, "Hi I heard about Spark"),
+#     (0.0, "I wish Java could use case classes"),
+#     (1.0, "Logistic regression models are neat")
+# ], ["label", "sentence"])
+#
+# tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+# wordsData = tokenizer.transform(sentenceData)
+#
+#
+# cv = CountVectorizer(inputCol="words", outputCol="rawFeatures")
+# model = cv.fit(wordsData)
+# featurizedData = model.transform(wordsData)
+#
+# idf = IDF(inputCol="rawFeatures", outputCol="features")
+# idfModel = idf.fit(featurizedData)
+# rescaledData = idfModel.transform(featurizedData)
+#
+# rescaledData.select("label", "features").show()
+#
+#
+# from pyspark.sql.functions import split
+# split_col = split(rescaledData['features'], ',')
+# df = rescaledData.withColumn('NAME1', split_col.getItem(0))
+# df = df.withColumn('NAME2', split_col.getItem(1))
+# df.show()
+#
+#
+# from pyspark.ml.linalg import Vectors, VectorUDT
+# >>> test = udf(lambda vs: Vectors.dense(vs), VectorUDT())
+#
+#
+# #try TF
+# from pyspark.sql.functions import size
+# >>> featurizedData.filter(size('words')>5).show()
+#
+# featurizedData = featurizedData.withColumn("size",size('words'))
+#
 
 
 
