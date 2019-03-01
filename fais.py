@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 from pyspark import SparkContext
+from pyspark.sql import SQLContext
+from pyspark import sql
+
 sc = SparkContext()
 sqlContext = sql.SQLContext(sc)
 
