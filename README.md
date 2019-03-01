@@ -19,6 +19,12 @@ time sh 2-easy_run.sh
 wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/3-easy_finish.sh
 sh 1-easy_finish.sh
 
+
+Ensuite pour le 2e mapreduce:
+
+
+
+
 A FAIRE:
 1- changer les documents tfidf car le tfidf est tjs a 0 (10 doc par file, 5 corpus en tout, double de taille entre chaque corpus, commence a 10k mots ou plus)
 2- documenter tout sur le document word
