@@ -2,8 +2,8 @@
 from pyspark import SparkContext
 sc = SparkContext("local", "first app")
 
-text = sc.textFile("hdfs:///user/hadoop/tfidf/input/text_0.txt")
-print(text.count())
+text = sc.textFile("hdfs:///user/hadoop/tfidf/input/text_0.txt").cache().count()
+print "Lines with a: %i, lines with b: %i" % (text)
 
 
 # from pyspark import SparkContext
