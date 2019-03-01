@@ -97,28 +97,28 @@ results = model.transform(docs)
 
 
 
-rescaledData.schema["features"].dataType
-
-rescaledData.withColumn('tf', rescaledData['features'] / rescaledData['size'])
-
-
-
-tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
-remover = StopWordsRemover(inputCol="words",
-outputCol="filtered")
-
-hashingTF = HashingTF(inputCol="filtered", outputCol="rawFeatures")
-# cv = CountVectorizer(inputCol="filtered", outputCol="rawFeatures")
-
-idf = IDF(inputCol="rawFeatures", outputCol="features")
-
-pipeline = Pipeline(stages=[tokenizer, remover, hashingTF, idf])
-# pipeline2 = Pipeline(stages=[tokenizer, remover, cv, idf])
-
-model = pipeline.fit(docs)
-# model2 = pipeline2.fit(docs)
-
-results = model.transform(docs)
+# rescaledData.schema["features"].dataType
+#
+# rescaledData.withColumn('tf', rescaledData['features'] / rescaledData['size'])
+#
+#
+#
+# tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+# remover = StopWordsRemover(inputCol="words",
+# outputCol="filtered")
+#
+# hashingTF = HashingTF(inputCol="filtered", outputCol="rawFeatures")
+# # cv = CountVectorizer(inputCol="filtered", outputCol="rawFeatures")
+#
+# idf = IDF(inputCol="rawFeatures", outputCol="features")
+#
+# pipeline = Pipeline(stages=[tokenizer, remover, hashingTF, idf])
+# # pipeline2 = Pipeline(stages=[tokenizer, remover, cv, idf])
+#
+# model = pipeline.fit(docs)
+# # model2 = pipeline2.fit(docs)
+#
+# results = model.transform(docs)
 #results2 = model2.transform(docs)
 
 #From website: example of TFIDF
