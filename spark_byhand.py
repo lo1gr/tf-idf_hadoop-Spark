@@ -1,28 +1,35 @@
+# Here, we tried to implement a python TF-IDF for Spark by hand
+
+# First, we count the number of texts to obtain the number of documents, an important metric
+# to compute the TF-IDF score.
 
 number_of_docs = texts.count()
 
-#split words
+# Through a function, we split the words and return a lower case version for continuity
+
 import re
 def tokenize(s):
   return re.split("\\W+", s.lower())
 
-#We Tokenize the text
+# We then Tokenize the text by mapping the function above to the texts
+
 tokenized_text = texts.map(lambda (title,text): (title, tokenize(text)))
 
-#Count Word Frequency in each document
+# In each document, we count the Word Frequency of each word
+
 term_frequency = tokenized_text.flatMapValues(lambda x: x).countByValue())
-#NEED TO DIVIDE BY TOTAL NUMBER OF WORDS PER DOC!
 
+#[TO ADD] NEED TO DIVIDE BY TOTAL NUMBER OF WORDS PER DOC!
 
-#how many times the words occur in ALL the documen
+# We then count how many times each words occurs in ALL the documents
+
 document_frequency = tokenized_text.flatMapValues(lambda x: x).distinct()\
                         .map(lambda (title,word): (word,title)).countByKey()
 
 import numpy as np
 
-#compute tf_idf
-# term_frequency: ((text0,text1..., word), count)
-#doc freq: <word,count>
+# We then compute the TF-IDF score using a function:
+
 def tf_idf(number_of_docs, term_frequency, document_frequency):
     result = []
     for key, value in term_frequency.items():
@@ -35,6 +42,6 @@ def tf_idf(number_of_docs, term_frequency, document_frequency):
         result.append({"doc":doc, "score":tf_idf, "term":term})
     return result
 
-
+# We output the result of our function which gives us the TF-IDF
 
 tf_idf_output = tf_idf(number_of_docs, term_frequency, document_frequency)
