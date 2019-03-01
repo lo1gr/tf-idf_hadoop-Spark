@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from pyspark import SparkContext
+from pyspark import SparkContext, SparkSession
 sc = SparkContext()
 
 spark = SparkSession(sc)
