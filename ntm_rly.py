@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 from pyspark import SparkContext
-sc = SparkContext("local", "first app")
+sc = SparkContext()
 
-
+spark = SparkSession(sc)
 texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
 docs = texts.toDF('label', 'sentence')
 docs.show(2)
