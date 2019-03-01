@@ -42,28 +42,8 @@ et ensuite faites les modif comme ca en changeant les doc localemnt, commit puis
 (ooption dans l'app), et la merge avec la branche principale si vous etes 100% surs. Sinon juste assurez vous de pousser vos commits assez souvent et s'assurer de pas se marcher sur les pieds car si on modifie en mm temps sur la branche principale ca bug.
 
 
-
-Pyspark optimised: understand output of this -> and can we do the normal formula
-for TFIDF with this structure? If works then can easily implement.
-Do the same with the "by hand" one.
-
-from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-
-sentenceData = spark.createDataFrame([
-    (0.0, "Hi I heard about Spark"),
-    (0.0, "I wish Java could use case classes"),
-    (1.0, "Logistic regression models are neat")
-], ["label", "sentence"])
-
-tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
-wordsData = tokenizer.transform(sentenceData)
-
-hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
-featurizedData = hashingTF.transform(wordsData)
-# alternatively, CountVectorizer can also be used to get term frequency vectors
-
-idf = IDF(inputCol="rawFeatures", outputCol="features")
-idfModel = idf.fit(featurizedData)
-rescaledData = idfModel.transform(featurizedData)
-
-rescaledData.select("label", "features").show()
+Pour importer des files sur Spark:
+wget the files as we were doing previously
+type:
+pySpark
+then to import the files can do: texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input").map(removePunctuation)   : check spark_optimized
