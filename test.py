@@ -3,7 +3,7 @@ from pyspark import SparkContext
 sc = SparkContext("local", "first app")
 
 text = sc.textFile("hdfs:///user/hadoop/tfidf/input/text_0.txt")
-text.count()
+print(text.count())
 
 
 # from pyspark import SparkContext
