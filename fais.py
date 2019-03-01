@@ -2,6 +2,7 @@
 
 from pyspark import SparkContext
 sc = SparkContext()
+sqlContext = sql.SQLContext(sc)
 
 texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
 docs = texts.toDF('label', 'sentence')
