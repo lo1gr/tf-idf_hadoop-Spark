@@ -3,7 +3,6 @@
 from pyspark import SparkContext, SparkSession
 sc = SparkContext()
 
-spark = SparkSession(sc)
 texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
 docs = texts.toDF('label', 'sentence')
 docs.show(2)
