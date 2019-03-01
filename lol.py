@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from pyspark import SparkContext, SparkSession
+from pyspark import SparkContext
 sc = SparkContext()
 
 texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
