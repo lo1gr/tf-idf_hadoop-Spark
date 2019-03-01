@@ -1,8 +1,5 @@
 #!/usr/bin/python
 
- # sc.textFile(“/path/to/dir”), where it returns an rdd of string or
- # use sc.wholeTextFiles(“/path/to/dir”) to get an RDD of (key,value) pairs
- # where key is the path and value is the content from each file.
 from pyspark import SparkContext
 sc = SparkContext("local", "first app")
 
