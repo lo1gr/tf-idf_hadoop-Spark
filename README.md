@@ -75,7 +75,9 @@ hdfs dfs -put text_3.txt /user/hadoop/tfidf/input
 hdfs dfs -put text_4.txt /user/hadoop/tfidf/input
 ...
 
-peut etre que ca ca marche ce serait + rapide pour prendre les docs
+
+peut etre que ca ca marche ce serait + rapide pour prendre les docs:
+
 for i in {0..9}; do
 	wget https://raw.githubusercontent.com/lo1gr/tf-idf_hadoop-Spark/master/documents/0/text_$i.txt
 	hdfs dfs -put text_$i.txt /user/hadoop/tfidf/input
