@@ -3,12 +3,8 @@
 from pyspark import SparkContext
 sc = SparkContext("local", "first app")
 
-def removePunctuation(text):
-    text=text.lower().strip()
-    text=re.sub(“[^0-9a-zA-Z ]”, ”, text)
-    return text
 
-texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input").map(removePunctuation)
+texts = sc.wholeTextFiles("hdfs:///user/hadoop/tfidf/input")
 docs = texts.toDF()
 docs = docs.toDF('label', 'sentence')
 docs.show(2)
